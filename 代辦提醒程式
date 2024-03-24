@@ -1,0 +1,109 @@
+import tkinter
+import random
+import datetime
+import time
+
+root = tkinter.Tk()
+root.configure(bg="white")
+root.title("待辦事項")
+root.geometry("240x550")
+
+tasks = []
+
+def update_listbox():
+    clear_listbox()
+    for task in tasks:
+        lb_tasks.insert("end", task)
+
+def clear_listbox():
+    lb_tasks.delete(0, "end")
+
+def add_task():
+    task = txt_input.get()
+    if task != "":
+        tasks.append(task)
+        update_listbox()
+    else:
+        lbl_display["text"] = "不能輸入空白"
+    txt_input.delete(0, "end")
+
+def del_all_tasks():
+    global tasks
+    tasks = []
+    update_listbox()
+
+def delete_one_task():
+    task = lb_tasks.get("active")
+    if task in tasks:
+        tasks.remove(task)
+    update_listbox()
+
+def sort_asc():
+    tasks.sort()
+    update_listbox()
+
+def sort_desc():
+    tasks.sort()
+    tasks.reverse()
+    update_listbox()
+
+def choose_random():
+    task = random.choice(tasks)
+    lbl_display["text"] = task
+
+def set_reminder():
+    task = lb_tasks.get("active")
+    if task in tasks:
+        reminder_time_str = txt_reminder.get()
+        try:
+            reminder_time = datetime.datetime.strptime(reminder_time_str, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            lbl_display["text"] = "提醒時間格式不正確，請按照 YYYY-MM-DD HH:MM:SS 格式輸入。"
+            return
+        current_time = datetime.datetime.now()
+        if reminder_time <= current_time:
+            lbl_display["text"] = "提醒時間必須晚於當前時間。"
+            return
+        print(f"Reminder set for task '{task}' at {reminder_time.strftime('%Y-%m-%d %H:%M:%S')}")
+        # 等待提醒時間
+        while datetime.datetime.now() < reminder_time:
+            time.sleep(1)
+        print(f"Reminder for task '{task}'!")
+
+def exit():
+    pass
+
+lbl_title = tkinter.Label(root, text="ToDo List", bg="white")
+lbl_title.pack()
+
+lbl_display = tkinter.Label(root, text="", bg="white")
+lbl_display.pack()
+
+txt_input = tkinter.Entry(root, width=20)
+txt_input.pack()
+
+btn_add_task = tkinter.Button(root, text="增加待辦事項", fg="green", bg="white", command=add_task)
+btn_add_task.pack()
+
+btn_delete_one = tkinter.Button(root, text="Delete One task", fg="green", bg="white", command=delete_one_task)
+btn_delete_one.pack()
+
+btn_delete_all = tkinter.Button(root, text="Delete All task", fg="green", bg="white", command=del_all_tasks)
+btn_delete_all.pack()
+
+lbl_reminder = tkinter.Label(root, text="提醒時間 (年-月-日 時:分:秒):", bg="white")  #24小時制
+lbl_reminder.pack()
+
+txt_reminder = tkinter.Entry(root, width=20)
+txt_reminder.pack()
+
+btn_reminder = tkinter.Button(root, text="Set Reminder", fg="green", bg="white", command=set_reminder)
+btn_reminder.pack()
+
+lb_tasks = tkinter.Listbox(root)
+lb_tasks.pack()
+
+btn_exit = tkinter.Button(root, text="Exit", fg="green", bg="white", command=exit)
+btn_exit.pack()
+
+root.mainloop()
