@@ -2,6 +2,7 @@ import tkinter
 import random
 import datetime
 import time
+from threading import Thread
 
 root = tkinter.Tk()
 root.configure(bg="white")
@@ -9,6 +10,7 @@ root.title("待辦事項")
 root.geometry("240x550")
 
 tasks = []
+reminders = []
 
 def update_listbox():
     clear_listbox()
@@ -56,19 +58,29 @@ def set_reminder():
     if task in tasks:
         reminder_time_str = txt_reminder.get()
         try:
-            reminder_time = datetime.datetime.strptime(reminder_time_str, "%Y-%m-%d %H:%M:%S")
+            reminder_time = datetime.datetime.strptime(reminder_time_str, "%Y-%m-%d %I:%M:%S %p")
         except ValueError:
-            lbl_display["text"] = "提醒時間格式不正確，請按照 YYYY-MM-DD HH:MM:SS 格式輸入。"
+            lbl_display["text"] = "提醒時間格式不正確，請按照 YYYY-MM-DD hh:mm:ss AM/PM 格式輸入。"
             return
         current_time = datetime.datetime.now()
         if reminder_time <= current_time:
             lbl_display["text"] = "提醒時間必須晚於當前時間。"
             return
-        print(f"Reminder set for task '{task}' at {reminder_time.strftime('%Y-%m-%d %H:%M:%S')}")
-        # 等待提醒時間
-        while datetime.datetime.now() < reminder_time:
-            time.sleep(1)
-        print(f"Reminder for task '{task}'!")
+        reminders.append((reminder_time, task))
+        print(f"Reminder set for task '{task}' at {reminder_time.strftime('%Y-%m-%d %I:%M:%S %p')}")
+        # 啟動新執行緒監視提醒
+        thread = Thread(target=check_reminders)
+        thread.start()
+
+def check_reminders():
+    while True:
+        current_time = datetime.datetime.now()
+        for reminder in reminders:
+            reminder_time, task = reminder
+            if current_time >= reminder_time:
+                print(f"Reminder for task '{task}'!")
+                reminders.remove(reminder)
+        time.sleep(1)
 
 def exit():
     pass
@@ -91,7 +103,7 @@ btn_delete_one.pack()
 btn_delete_all = tkinter.Button(root, text="Delete All task", fg="green", bg="white", command=del_all_tasks)
 btn_delete_all.pack()
 
-lbl_reminder = tkinter.Label(root, text="提醒時間 (年-月-日 時:分:秒):", bg="white")  #24小時制
+lbl_reminder = tkinter.Label(root, text="提醒時間 (年-月-日 時:分:秒 AM/PM)12小時制", bg="white")  # 12小時制
 lbl_reminder.pack()
 
 txt_reminder = tkinter.Entry(root, width=20)
