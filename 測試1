@@ -3,6 +3,7 @@ import random
 import datetime
 import time
 from threading import Thread
+from tkcalendar import DateEntry
 
 root = tkinter.Tk()
 root.configure(bg="white")
@@ -56,7 +57,7 @@ def choose_random():
 def set_reminder():
     task = lb_tasks.get("active")
     if task in tasks:
-        reminder_time_str = f"{var_year.get()}-{var_month.get()}-{var_day.get()} {var_hour.get()}:{var_minute.get()}:{var_second.get()} {var_ampm.get()}"
+        reminder_time_str = f"{cal.get_date()} {var_hour.get()}:{var_minute.get()}:{var_second.get()} {var_ampm.get()}"
         try:
             reminder_time = datetime.datetime.strptime(reminder_time_str, "%Y-%m-%d %I:%M:%S %p")
         except ValueError:
@@ -103,57 +104,31 @@ btn_delete_one.pack()
 lbl_reminder = tkinter.Label(root, text="提醒時間 (年-月-日 時:分:秒 AM/PM)12小時制", bg="white")  # 12小時制
 lbl_reminder.pack()
 
-# 提醒時間選擇
-reminder_frame = tkinter.Frame(root, bg="white")
-reminder_frame.pack()
+cal = DateEntry(root, width=12, background='darkblue', foreground='white', borderwidth=2, year=2024)
+cal.pack(padx=10, pady=10)
 
-year_label = tkinter.Label(reminder_frame, text="年:", bg="white")
-year_label.pack(side="left")
-var_year = tkinter.StringVar(root)
-var_year.set(datetime.datetime.now().year)
-year_optionmenu = tkinter.OptionMenu(reminder_frame, var_year, *[str(year) for year in range(datetime.datetime.now().year, datetime.datetime.now().year + 10)])
-year_optionmenu.pack(side="left")
+time_frame = tkinter.Frame(root, bg="white")
+time_frame.pack()
 
-month_label = tkinter.Label(reminder_frame, text="月:", bg="white")
-month_label.pack(side="left")
-var_month = tkinter.StringVar(root)
-var_month.set(datetime.datetime.now().month)
-month_optionmenu = tkinter.OptionMenu(reminder_frame, var_month, *[str(month) for month in range(1, 13)])
-month_optionmenu.pack(side="left")
-
-day_label = tkinter.Label(reminder_frame, text="日:", bg="white")
-day_label.pack(side="left")
-var_day = tkinter.StringVar(root)
-var_day.set(datetime.datetime.now().day)
-day_optionmenu = tkinter.OptionMenu(reminder_frame, var_day, *[str(day) for day in range(1, 32)])
-day_optionmenu.pack(side="left")
-
-hour_label = tkinter.Label(reminder_frame, text="時:", bg="white")
-hour_label.pack(side="left")
+tkinter.Label(time_frame, text="時間:", bg="white").pack(side="left")
 var_hour = tkinter.StringVar(root)
 var_hour.set(datetime.datetime.now().strftime("%I"))
-hour_optionmenu = tkinter.OptionMenu(reminder_frame, var_hour, *["{:02d}".format(hour) for hour in range(1, 13)])
+hour_optionmenu = tkinter.OptionMenu(time_frame, var_hour, *["{:02d}".format(hour) for hour in range(1, 13)])
 hour_optionmenu.pack(side="left")
 
-minute_label = tkinter.Label(reminder_frame, text="分:", bg="white")
-minute_label.pack(side="left")
 var_minute = tkinter.StringVar(root)
 var_minute.set(datetime.datetime.now().strftime("%M"))
-minute_optionmenu = tkinter.OptionMenu(reminder_frame, var_minute, *["{:02d}".format(minute) for minute in range(0, 60)])
+minute_optionmenu = tkinter.OptionMenu(time_frame, var_minute, *["{:02d}".format(minute) for minute in range(0, 60)])
 minute_optionmenu.pack(side="left")
 
-second_label = tkinter.Label(reminder_frame, text="秒:", bg="white")
-second_label.pack(side="left")
 var_second = tkinter.StringVar(root)
 var_second.set(datetime.datetime.now().strftime("%S"))
-second_optionmenu = tkinter.OptionMenu(reminder_frame, var_second, *["{:02d}".format(second) for second in range(0, 60)])
+second_optionmenu = tkinter.OptionMenu(time_frame, var_second, *["{:02d}".format(second) for second in range(0, 60)])
 second_optionmenu.pack(side="left")
 
-ampm_label = tkinter.Label(reminder_frame, text="AM/PM:", bg="white")
-ampm_label.pack(side="left")
 var_ampm = tkinter.StringVar(root)
 var_ampm.set(datetime.datetime.now().strftime("%p"))
-ampm_optionmenu = tkinter.OptionMenu(reminder_frame, var_ampm, "AM", "PM")
+ampm_optionmenu = tkinter.OptionMenu(time_frame, var_ampm, "AM", "PM")
 ampm_optionmenu.pack(side="left")
 
 btn_reminder = tkinter.Button(root, text="Set Reminder", fg="green", bg="white", command=set_reminder)
@@ -166,3 +141,4 @@ btn_exit = tkinter.Button(root, text="Exit", fg="green", bg="white", command=exi
 btn_exit.pack()
 
 root.mainloop()
+
