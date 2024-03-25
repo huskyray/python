@@ -84,7 +84,7 @@ def check_reminders():
         time.sleep(1)
 
 def exit():
-    pass
+    root.destroy()
 
 lbl_title = tkinter.Label(root, text="ToDo List", bg="white")
 lbl_title.pack()
@@ -141,4 +141,3 @@ btn_exit = tkinter.Button(root, text="Exit", fg="green", bg="white", command=exi
 btn_exit.pack()
 
 root.mainloop()
-
