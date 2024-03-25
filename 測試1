@@ -86,9 +86,6 @@ def check_reminders():
 def exit():
     root.destroy()
 
-lbl_title = tkinter.Label(root, text="ToDo List", bg="white")
-lbl_title.pack()
-
 lbl_display = tkinter.Label(root, text="", bg="white")
 lbl_display.pack()
 
@@ -98,10 +95,10 @@ txt_input.pack()
 btn_add_task = tkinter.Button(root, text="增加待辦事項", fg="green", bg="white", command=add_task)
 btn_add_task.pack()
 
-btn_delete_one = tkinter.Button(root, text="Delete One task", fg="green", bg="white", command=delete_one_task)
+btn_delete_one = tkinter.Button(root, text="刪除事項", fg="green", bg="white", command=delete_one_task)
 btn_delete_one.pack()
 
-lbl_reminder = tkinter.Label(root, text="提醒時間 (年-月-日 時:分:秒 AM/PM)12小時制", bg="white")  # 12小時制
+lbl_reminder = tkinter.Label(root, text="提醒時間", bg="white")  # 12小時制
 lbl_reminder.pack()
 
 cal = DateEntry(root, width=12, background='darkblue', foreground='white', borderwidth=2, year=2024)
@@ -133,16 +130,16 @@ second_spinbox.insert(0, datetime.datetime.now().strftime("%S"))
 
 ampm_combobox = tkinter.StringVar(root)
 ampm_combobox.set(datetime.datetime.now().strftime("%p"))
-ampm_optionmenu = tkinter.OptionMenu(time_frame, ampm_combobox, "AM", "PM")
+ampm_optionmenu = tkinter.OptionMenu(time_frame, ampm_combobox, "上午", "下午")
 ampm_optionmenu.pack(side="left")
 
-btn_reminder = tkinter.Button(root, text="Set Reminder", fg="green", bg="white", command=set_reminder)
+btn_reminder = tkinter.Button(root, text="設定提醒", fg="green", bg="white", command=set_reminder)
 btn_reminder.pack()
 
 lb_tasks = tkinter.Listbox(root)
 lb_tasks.pack()
 
-btn_exit = tkinter.Button(root, text="Exit", fg="green", bg="white", command=exit)
+btn_exit = tkinter.Button(root, text="關閉", fg="green", bg="white", command=exit)
 btn_exit.pack()
 
 root.mainloop()
