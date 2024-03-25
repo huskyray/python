@@ -68,7 +68,7 @@ def set_reminder():
             lbl_display["text"] = "提醒時間必須晚於當前時間。"
             return
         reminders.append((reminder_time, task))
-        print(f"提醒事項 '{task}' at {reminder_time.strftime('%Y-%m-%d %I:%M:%S %p')}")
+        print(f"提醒時間設定 '{task}' at {reminder_time.strftime('%Y-%m-%d %I:%M:%S %p')}")
         # 啟動新執行緒監視提醒
         thread = Thread(target=check_reminders)
         thread.start()
