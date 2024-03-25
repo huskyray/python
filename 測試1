@@ -68,7 +68,7 @@ def set_reminder():
             lbl_display["text"] = "提醒時間必須晚於當前時間。"
             return
         reminders.append((reminder_time, task))
-        print(f"Reminder set for task '{task}' at {reminder_time.strftime('%Y-%m-%d %I:%M:%S %p')}")
+        print(f"提醒事項 '{task}' at {reminder_time.strftime('%Y-%m-%d %I:%M:%S %p')}")
         # 啟動新執行緒監視提醒
         thread = Thread(target=check_reminders)
         thread.start()
@@ -79,7 +79,7 @@ def check_reminders():
         for reminder in reminders:
             reminder_time, task = reminder
             if current_time >= reminder_time:
-                print(f"Reminder for task '{task}'!")
+                print(f"注意事項 '{task}'!")
                 reminders.remove(reminder)
         time.sleep(1)
 
@@ -130,7 +130,7 @@ second_spinbox.insert(0, datetime.datetime.now().strftime("%S"))
 
 ampm_combobox = tkinter.StringVar(root)
 ampm_combobox.set(datetime.datetime.now().strftime("%p"))
-ampm_optionmenu = tkinter.OptionMenu(time_frame, ampm_combobox, "上午", "下午")
+ampm_optionmenu = tkinter.OptionMenu(time_frame, ampm_combobox, "AM", "PM")
 ampm_optionmenu.pack(side="left")
 
 btn_reminder = tkinter.Button(root, text="設定提醒", fg="green", bg="white", command=set_reminder)
