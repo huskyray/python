@@ -7,7 +7,7 @@ from threading import Thread
 root = tkinter.Tk()
 root.configure(bg="white")
 root.title("待辦事項")
-root.geometry("240x550")
+root.geometry("280x550")
 
 tasks = []
 reminders = []
@@ -99,9 +99,6 @@ btn_add_task.pack()
 
 btn_delete_one = tkinter.Button(root, text="Delete One task", fg="green", bg="white", command=delete_one_task)
 btn_delete_one.pack()
-
-btn_delete_all = tkinter.Button(root, text="Delete All task", fg="green", bg="white", command=del_all_tasks)
-btn_delete_all.pack()
 
 lbl_reminder = tkinter.Label(root, text="提醒時間 (年-月-日 時:分:秒 AM/PM)12小時制", bg="white")  # 12小時制
 lbl_reminder.pack()
