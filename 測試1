@@ -8,7 +8,7 @@ from tkcalendar import DateEntry
 root = tkinter.Tk()
 root.configure(bg="#F0F0F0")
 root.title("待辦事項")
-root.attributes("-fullscreen", True)
+root.geometry("800x600")
 
 tasks = []
 reminders = []
@@ -167,4 +167,3 @@ btn_exit = tkinter.Button(root, text="關閉", fg="white", bg="#546E7A", command
 btn_exit.pack(pady=5, padx=10, fill="x")
 
 root.mainloop()
-
