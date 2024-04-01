@@ -61,10 +61,24 @@ def set_reminder():
             lbl_display["text"] = "提醒時間必須晚於當前時間。"
             return
         reminders.append((reminder_time, task))
+        lbl_display["text"] = "提醒設定成功！"
+        lbl_display.config(bg="red", fg="white")  # 更改提示欄位顏色為紅底白字
         print(f"提醒時間設定 '{task}' at {reminder_time.strftime('%Y-%m-%d %I:%M:%S %p')}")
         # Start a new thread to monitor reminders
         thread = Thread(target=check_reminders)
         thread.start()
+
+# Function to cancel reminder for a selected task
+def cancel_reminder():
+    task = lb_tasks.get("active")
+    for reminder in reminders:
+        reminder_time, reminder_task = reminder
+        if reminder_task == task:
+            reminders.remove(reminder)
+            lbl_display["text"] = f"已取消 '{task}' 的提醒"
+            lbl_display.config(bg="red", fg="white")  # 更改提示欄位顏色為紅底白字
+            print(f"已取消 '{task}' 的提醒")
+            break
 
 # Function to check reminders
 def check_reminders():
@@ -74,6 +88,7 @@ def check_reminders():
             reminder_time, task = reminder
             if current_time >= reminder_time:
                 lbl_display["text"] = f"注意事項 '{task}'!"
+                lbl_display.config(bg="red", fg="white")  # 更改提示欄位顏色為紅底白字
                 print(f"注意事項 '{task}'!")
                 reminders.remove(reminder)
         time.sleep(1)
@@ -131,6 +146,10 @@ cal.pack(padx=10, pady=10)
 btn_reminder = tkinter.Button(root, text="設定提醒", fg="white", bg="#6CAE75", command=set_reminder)
 btn_reminder.pack(pady=5, padx=10, fill="x")
 
+# Button to cancel reminder
+btn_cancel_reminder = tkinter.Button(root, text="取消提醒", fg="white", bg="#EF5350", command=cancel_reminder)
+btn_cancel_reminder.pack(pady=5, padx=10, fill="x")
+
 # Listbox to display tasks
 lb_tasks = tkinter.Listbox(root, width=60, height=15)
 lb_tasks.pack(pady=10, padx=10, fill="both", expand=True)
@@ -140,7 +159,7 @@ btn_delete_one = tkinter.Button(root, text="刪除選定事項", fg="white", bg=
 btn_delete_one.pack(pady=5, padx=10, fill="x")
 
 # Label to display reminders
-lbl_display = tkinter.Label(root, text="", bg="#F0F0F0", fg="red")
+lbl_display = tkinter.Label(root, text="", bg="red", fg="white", font=("Arial", 16))  # 更改文字顏色為白字
 lbl_display.pack(pady=5, fill="x")
 
 # Button to exit the application
@@ -148,3 +167,4 @@ btn_exit = tkinter.Button(root, text="關閉", fg="white", bg="#546E7A", command
 btn_exit.pack(pady=5, padx=10, fill="x")
 
 root.mainloop()
+
