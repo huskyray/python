@@ -10,7 +10,7 @@ root.geometry("800x600")
 
 tasks = []
 reminders = []
-DELETE_DELAY = 600  # 設定過期事件在10分鐘後自動刪除（600秒）
+DELETE_DELAY = 30 * 24 * 60 * 60  # 設定過期事件在30天後自動刪除（30天的秒數）
 
 # Function to update the listbox with tasks
 def update_listbox():
@@ -136,7 +136,7 @@ lbl_display = tk.Label(root, text="", bg="#F0F0F0", font=("Arial", 12))
 lbl_display.pack(pady=5, fill="x")
 
 # Information about automatic deletion
-lbl_info = tk.Label(root, text=f"過期事項將在 {DELETE_DELAY // 60} 分鐘後自動刪除", bg="#F0F0F0", font=("Arial", 10))
+lbl_info = tk.Label(root, text=f"過期事項將在 {DELETE_DELAY // (24 * 60 * 60)} 天後自動刪除", bg="#F0F0F0", font=("Arial", 10))
 lbl_info.pack(pady=5, fill="x")
 
 # Start checking reminders
